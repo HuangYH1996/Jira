@@ -1,7 +1,7 @@
 import { SearchPanel } from "./search-panel"
 import { List } from "./list"
 import { useState, useEffect } from "react"
-import { cleanObject } from "utils"
+import { cleanObject, useDebounce } from "utils"
 import * as qs from 'qs'
 
 // 获取api变量
@@ -14,6 +14,9 @@ export const ProjectListScreen = () => {
     personId: '',
   })
 
+  // 对param添加防抖操作
+  const debounceParam = useDebounce(param, 2000)
+
   // user列表
   const [users, setUsers] = useState([])
 
@@ -22,12 +25,12 @@ export const ProjectListScreen = () => {
 
   // 当param改变时，去获取项目列表的数据
   useEffect(() => {
-    fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(param))}`).then(async response => {
+    fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(debounceParam))}`).then(async response => {
       if (response.ok) {
         setList(await response.json())
       }
     })
-  }, [param])
+  }, [debounceParam])
 
   // 初始化users一次
   useEffect(() => {

@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 // 排除值为0，转换为boolean为false的情况
 export const isFalsey = (value) => (value === 0 ? false : !value);
 
@@ -11,4 +13,21 @@ export const cleanObject = (object) => {
     return result[key];
   });
   return result;
+};
+
+// custom hook debounce
+export const useDebounce = (value, delay) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    // 每次在value变化以后，设置一个定时器
+    const timer = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+    // 执行当前effect时，对上一个effect进行清除
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
 };
