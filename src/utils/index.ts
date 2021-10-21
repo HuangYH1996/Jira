@@ -35,3 +35,28 @@ export const useDebounce = (value: Param, delay?: number) => {
 
   return debouncedValue;
 };
+
+export const useMount = (callback: () => void) => {
+  useEffect(() => {
+    callback();
+  }, []);
+};
+
+export const useArray = <T>(persons: T[]) => {
+  const [value, setValue] = useState(persons);
+  const clear = () => {
+    setValue([] as T[]);
+  };
+  const removeIndex = (index: number) => {
+    let copy = [...value];
+    // copy.shift()
+    copy.splice(index, 1);
+    setValue([...copy]);
+  };
+  const add = (p: T) => {
+    let copy = [...value];
+    copy.push(p);
+    setValue([...copy]);
+  };
+  return { value, clear, removeIndex, add };
+};
