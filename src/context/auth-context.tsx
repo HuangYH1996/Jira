@@ -2,11 +2,25 @@ import React, { ReactNode } from "react";
 import * as auth from "auth-provider";
 import { useState } from "react";
 import { User } from "screens/project-list/search-panel";
+import { http } from "utils/http";
+import { useMount } from "utils";
 
 interface AuthForm {
   username: string;
   password: string;
 }
+
+// bootStrap 启动
+const bootstrapUser = async () => {
+  let user = null;
+  const token = auth.getToken();
+  if (token) {
+    // 根据token 从 me 这个api获取user
+    const data = await http("me", { token });
+    user = data.user;
+  }
+  return user;
+};
 
 // value指定一个泛型类型
 const AuthContext = React.createContext<
@@ -27,6 +41,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const register = (form: AuthForm) =>
     auth.register(form).then((user) => setUser(user));
   const logout = () => auth.logout().then(() => setUser(null));
+
+  // 刷新的时候 AuthProvider重新加载时 初始化一次
+  useMount(() => {
+    bootstrapUser().then(setUser);
+  });
+
   return (
     <AuthContext.Provider
       children={children}

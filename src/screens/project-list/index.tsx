@@ -3,6 +3,7 @@ import { List } from "./list";
 import { useState, useEffect } from "react";
 import { cleanObject, useDebounce } from "utils";
 import * as qs from "qs";
+import { useHttp } from "utils/http";
 
 // 获取api变量
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -23,24 +24,21 @@ export const ProjectListScreen = () => {
   // list列表
   const [list, setList] = useState([]);
 
+  // usehttp
+  const client = useHttp();
+
   // 当param改变时，去获取项目列表的数据
   useEffect(() => {
-    fetch(
-      `${apiUrl}/projects?${qs.stringify(cleanObject(debounceParam))}`
-    ).then(async (response) => {
-      if (response.ok) {
-        setList(await response.json());
-      }
-    });
+    // 默认是 GET 所以不用指定method
+    client("projects", { data: cleanObject(debounceParam) }).then((response) =>
+      setList(response)
+    );
   }, [debounceParam]);
 
   // 初始化users一次
   useEffect(() => {
-    fetch(`${apiUrl}/users`).then(async (response) => {
-      if (response.ok) {
-        setUsers(await response.json());
-      }
-    });
+    // 可以直接省略
+    client("users").then(setUsers);
   }, []);
 
   return (
