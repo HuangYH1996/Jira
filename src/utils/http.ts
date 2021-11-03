@@ -16,6 +16,7 @@ export const http = async (
   endpoint: string,
   { data, token, headers, ...customConfig }: Config = {}
 ) => {
+  // customConfig 中的method可以覆盖默认的 GET
   const config = {
     method: "GET",
     headers: {
@@ -56,7 +57,7 @@ export const useHttp = () => {
   // return (...[endpoint, config]: [string, Config]) => http(endpoint, {...config, token: user?.token})
   // 直接从http里面获取数据类型
 
-  // todo TS 操作符
+  // todo TS 工具类型
   return (...[endpoint, config]: Parameters<typeof http>) =>
     http(endpoint, { ...config, token: user?.token });
 };
