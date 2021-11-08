@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import { Button } from "antd";
 import { useAuth } from "context/auth-context";
 import { ProjectListScreen } from "screens/project-list";
@@ -5,9 +6,58 @@ import { ProjectListScreen } from "screens/project-list";
 export const AuthenticatedApp = () => {
   const { logout } = useAuth();
   return (
-    <div>
-      <Button onClick={logout}>登出</Button>
-      <ProjectListScreen />
-    </div>
+    <Container>
+      <Header>
+        <HeaderLeft>
+          <h3>Logo</h3>
+          <h3>项目</h3>
+          <h3>用户</h3>
+        </HeaderLeft>
+        <HeaderRight>
+          <Button onClick={logout}>登出</Button>
+        </HeaderRight>
+      </Header>
+      <Nav>nav</Nav>
+      <Main>
+        <ProjectListScreen />
+      </Main>
+      <Aside>aside</Aside>
+      <Footer>footer...</Footer>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  display: grid;
+  grid-template-rows: 6rem 1fr 6rem;
+  grid-template-columns: 20rem 1fr 20rem;
+  grid-template-areas:
+    "header header header"
+    "nav main aside"
+    "footer footer footer";
+`;
+
+const Header = styled.header`
+  grid-area: header;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+const HeaderLeft = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+const HeaderRight = styled.div``;
+const Nav = styled.nav`
+  grid-area: nav;
+`;
+const Main = styled.main`
+  grid-area: main;
+`;
+const Aside = styled.aside`
+  grid-area: aside;
+`;
+const Footer = styled.footer`
+  grid-area: footer;
+`;
