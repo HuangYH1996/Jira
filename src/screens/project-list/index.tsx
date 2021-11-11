@@ -2,12 +2,8 @@ import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { useState, useEffect } from "react";
 import { cleanObject, useDebounce } from "utils";
-import * as qs from "qs";
 import { useHttp } from "utils/http";
 import styled from "@emotion/styled";
-
-// 获取api变量
-const apiUrl = process.env.REACT_APP_API_URL;
 
 export const ProjectListScreen = () => {
   // search需要2个参数：项目名和id
@@ -34,12 +30,14 @@ export const ProjectListScreen = () => {
     client("projects", { data: cleanObject(debounceParam) }).then((response) =>
       setList(response)
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounceParam]);
 
   // 初始化users一次
   useEffect(() => {
     // 可以直接省略
     client("users").then(setUsers);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

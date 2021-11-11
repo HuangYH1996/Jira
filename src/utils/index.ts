@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
 
-interface Param {
-  name: string;
-  personId: string;
-}
 // 排除值为0，转换为boolean为false的情况
-export const isFalsey = (value: any) => (value === 0 ? false : !value);
+export const isFalsey = (value: unknown) => (value === 0 ? false : !value);
+export const isVoid = (value: unknown) =>
+  value === undefined || value === null || value === "";
 
 // 拷贝后修改，因为在一个函数中，改变传入的对象本身是不好的
-export const cleanObject = (object: Param) => {
-  const result: any = { ...object };
+export const cleanObject = (object: { [key: string]: unknown }) => {
+  const result = { ...object };
   Object.keys(result).forEach((key) => {
-    if (isFalsey(result[key])) {
+    if (isVoid(result[key])) {
       delete result[key];
     }
     return result[key];
@@ -20,7 +18,8 @@ export const cleanObject = (object: Param) => {
 };
 
 // custom hook debounce
-export const useDebounce = (value: Param, delay?: number) => {
+// 用泛型来规范类型
+export const useDebounce = <V>(value: V, delay?: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
     // 每次在value变化以后，设置一个定时器ß
@@ -39,6 +38,8 @@ export const useDebounce = (value: Param, delay?: number) => {
 export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
+    // TODO 依赖项里如果加上callback会造成无限循环，这个和useCallback以及useMemo有关系
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 

@@ -1,9 +1,6 @@
-import { Button, Form, Input } from "antd";
+import { Form, Input } from "antd";
 import { useAuth } from "context/auth-context";
-import { FormEvent } from "react";
 import { LongButton } from "unauthenticated-app";
-
-const apiUrl = process.env.REACT_APP_API_URL;
 
 export const LoginScreen = () => {
   // 使用useAuth 取出 全局user状态
