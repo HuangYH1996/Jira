@@ -43,10 +43,13 @@ export const http = async (
         return Promise.reject({ message: "请重新登录" });
       }
       const data = await response.json();
+      console.log("response", response);
+      console.log("data", data);
+
       if (response.ok) {
         return data;
       } else {
-        Promise.reject(data);
+        return Promise.reject(data);
       }
     });
 };

@@ -1,9 +1,11 @@
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
-import { useState, useEffect } from "react";
-import { cleanObject, useDebounce } from "utils";
-import { useHttp } from "utils/http";
+import { useState } from "react";
+import { useDebounce } from "utils";
 import styled from "@emotion/styled";
+import { Typography } from "antd";
+import { useProject } from "utils/project";
+import { useUsers } from "utils/user";
 
 export const ProjectListScreen = () => {
   // search需要2个参数：项目名和id
@@ -15,30 +17,11 @@ export const ProjectListScreen = () => {
   // 对param添加防抖操作
   const debounceParam = useDebounce(param, 300);
 
+  // const { run, isLoading, error, data: list } = useAsync<Project[]>()
+  const { isLoading, error, data: list } = useProject(debounceParam);
+
   // user列表
-  const [users, setUsers] = useState([]);
-
-  // list列表
-  const [list, setList] = useState([]);
-
-  // usehttp
-  const client = useHttp();
-
-  // 当param改变时，去获取项目列表的数据
-  useEffect(() => {
-    // 默认是 GET 所以不用指定method
-    client("projects", { data: cleanObject(debounceParam) }).then((response) =>
-      setList(response)
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debounceParam]);
-
-  // 初始化users一次
-  useEffect(() => {
-    // 可以直接省略
-    client("users").then(setUsers);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const users = useUsers();
 
   return (
     <Container>
@@ -48,7 +31,10 @@ export const ProjectListScreen = () => {
         param={param}
         setParam={setParam}
       ></SearchPanel>
-      <List users={users} list={list}></List>
+      {error ? (
+        <Typography.Text type={"danger"}>{error.message}</Typography.Text>
+      ) : null}
+      <List users={users} dataSource={list || []} loading={isLoading}></List>
     </Container>
   );
 };
