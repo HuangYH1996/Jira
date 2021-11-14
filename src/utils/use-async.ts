@@ -12,7 +12,16 @@ const defaultInitialState: State<null> = {
   error: null,
 };
 
-export const useAsync = <D>(initialState?: State<D>) => {
+const defaultConfig = {
+  throwOnError: false,
+};
+
+export const useAsync = <D>(
+  initialState?: State<D>,
+  initialConfig?: typeof defaultConfig
+) => {
+  // 默认为defaultConfig 然后用initialConfig来覆盖它（如果有的话）
+  const config = { ...defaultConfig, ...initialConfig };
   // 真正用到的state， 先默认，再用用户定义的state进行覆盖
   // 泛型指定state的类型
   const [state, setState] = useState<State<D>>({
@@ -49,6 +58,7 @@ export const useAsync = <D>(initialState?: State<D>) => {
       })
       .catch((error) => {
         setError(error);
+        if (config.throwOnError) return Promise.reject(error);
         return error;
       });
   };
