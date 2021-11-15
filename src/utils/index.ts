@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // 排除值为0，转换为boolean为false的情况
 export const isFalsey = (value: unknown) => (value === 0 ? false : !value);
@@ -63,7 +63,7 @@ export const useArray = <T>(persons: T[]) => {
 };
 
 export const useDocumentTitle = (title: string, keepOnUnmount: boolean) => {
-  const oldTitle = document.title;
+  const oldTitle = useRef(document.title).current;
   useEffect(() => {
     document.title = title;
   }, [title]);
@@ -74,5 +74,5 @@ export const useDocumentTitle = (title: string, keepOnUnmount: boolean) => {
         document.title = oldTitle;
       }
     };
-  }, []);
+  }, [keepOnUnmount, oldTitle]);
 };
