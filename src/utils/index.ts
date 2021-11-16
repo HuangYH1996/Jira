@@ -64,6 +64,8 @@ export const useArray = <T>(persons: T[]) => {
 
 export const useDocumentTitle = (title: string, keepOnUnmount: boolean) => {
   const oldTitle = useRef(document.title).current;
+  console.log("渲染时的oldTitle：", oldTitle);
+
   useEffect(() => {
     document.title = title;
   }, [title]);
@@ -72,6 +74,7 @@ export const useDocumentTitle = (title: string, keepOnUnmount: boolean) => {
     return () => {
       if (!keepOnUnmount) {
         document.title = oldTitle;
+        console.log("卸载时的oldTitle：", oldTitle);
       }
     };
   }, [keepOnUnmount, oldTitle]);
