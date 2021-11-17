@@ -4,7 +4,7 @@ import { Row } from "components/lib";
 import { useAuth } from "context/auth-context";
 import { ProjectListScreen } from "screens/project-list";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ProjectScreen } from "screens/project";
 import { resetRoute } from "utils";
@@ -21,8 +21,8 @@ export const AuthenticatedApp = () => {
               path={"/projects/:projectId/*"}
               element={<ProjectScreen />}
             />
+            <Route path={"/"} element={<Navigate to={"/projects"} replace />} />
           </Routes>
-          {/* <Navigate to={'/projects'} replace={false} /> */}
         </Router>
       </Main>
     </Container>
