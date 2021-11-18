@@ -1,7 +1,6 @@
 import "../../../src/wdyr";
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
-import { useState } from "react";
 import { useDebounce, useDocumentTitle } from "utils";
 import styled from "@emotion/styled";
 import { Typography } from "antd";
@@ -11,13 +10,12 @@ import { useUrlQueryParam } from "utils/url";
 
 export const ProjectListScreen = () => {
   // search需要2个参数：项目名和id
-  const [, setParam] = useState({
-    name: "",
-    personId: "",
-  });
+  // const [, setParam] = useState({
+  //   name: "",
+  //   personId: "",
+  // });
 
-  const [param] = useUrlQueryParam(["name", "personId"]);
-
+  const [param, setParam] = useUrlQueryParam(["name", "personId"]);
   // 对param添加防抖操作
   const debounceParam = useDebounce(param, 300);
 
@@ -27,6 +25,8 @@ export const ProjectListScreen = () => {
   // user列表
   const users = useUsers();
   useDocumentTitle("项目列表", false);
+
+  console.log("param", param);
 
   return (
     <Container>
@@ -44,7 +44,7 @@ export const ProjectListScreen = () => {
   );
 };
 
-ProjectListScreen.whyDidYouRender = true;
+ProjectListScreen.whyDidYouRender = false;
 
 const Container = styled.div`
   padding: 2rem;
