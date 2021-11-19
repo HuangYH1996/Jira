@@ -6,7 +6,7 @@ import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProject } from "utils/project";
 import { useUsers } from "utils/user";
-import { useUrlQueryParam } from "utils/url";
+import { useProjectParam } from "./utils";
 
 export const ProjectListScreen = () => {
   // search需要2个参数：项目名和id
@@ -15,7 +15,11 @@ export const ProjectListScreen = () => {
   //   personId: "",
   // });
 
-  const [param, setParam] = useUrlQueryParam(["name", "personId"]);
+  // const [param, setParam] = useUrlQueryParam(["name", "personId"]);
+  // // 对param中的personId进行类型转换
+  // const projectParam = {...param, personId: Number(param.personId) || undefined}
+
+  const [param, setParam] = useProjectParam();
   // 对param添加防抖操作
   const debounceParam = useDebounce(param, 300);
 
@@ -25,8 +29,6 @@ export const ProjectListScreen = () => {
   // user列表
   const users = useUsers();
   useDocumentTitle("项目列表", false);
-
-  console.log("param", param);
 
   return (
     <Container>
