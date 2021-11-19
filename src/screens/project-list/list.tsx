@@ -50,5 +50,12 @@ export const List = ({ users, ...props }: ListProps) => {
     },
   ];
 
-  return <Table pagination={false} columns={columns} {...props} />;
+  return (
+    <Table
+      rowKey={(record) => record.name}
+      pagination={false}
+      columns={columns}
+      {...props}
+    />
+  );
 };

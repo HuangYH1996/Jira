@@ -61,7 +61,7 @@
     "eslint": "^7.11.0",
     "eslint-config-prettier": "^8.3.0",
     "husky": "^7.0.2",
-    "jira-dev-tool": "^1.6.59",
+    "jira-dev-tool": "^1.7.61",
     "lint-staged": "^11.2.3",
     "node": "^16.11.1",
     "prettier": "2.4.1",
