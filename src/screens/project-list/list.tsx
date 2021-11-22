@@ -2,6 +2,8 @@ import { Table, TableProps } from "antd";
 import { User } from "./search-panel";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
+import { Pin } from "components/pin";
+import { useEditProject } from "utils/project";
 
 export interface Project {
   id: number;
@@ -17,12 +19,27 @@ interface ListProps extends TableProps<Project> {
 }
 
 export const List = ({ users, ...props }: ListProps) => {
+  const { mutate } = useEditProject();
+
   const columns = [
+    {
+      title: <Pin checked={true} disabled={true} />,
+      render(text: string, record: Project) {
+        return (
+          <Pin
+            checked={record.pin}
+            onCheckedChange={(pin) => {
+              mutate({ id: record.id, pin });
+            }}
+          />
+        );
+      },
+    },
     {
       title: "名称",
       dataIndex: "name",
       key: "name",
-      // sorter: (a: Project, b: Project) => a.name.localeCompare(b.name),
+      sorter: (a: Project, b: Project) => a.name.localeCompare(b.name),
       render(text: string, record: Project) {
         return <Link to={String(record.id)}>{text}</Link>;
       },

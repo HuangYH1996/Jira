@@ -3,17 +3,16 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-// import { loadDevTools } from "jira-dev-tool";
-import { loadDevTools } from "jira-dev-tool";
+import { DevTools, loadServer } from "jira-dev-tool";
 import { AppProviders } from "context/index";
 // jira-dev-tool也用了antd 所以这里放在后面进行覆盖
 import "antd/dist/antd.less";
 
-loadDevTools(() => {
+loadServer(() => {
   ReactDOM.render(
     <React.StrictMode>
       <AppProviders>
-        {/* <DevTools /> */}
+        <DevTools />
         <App />
       </AppProviders>
     </React.StrictMode>,
