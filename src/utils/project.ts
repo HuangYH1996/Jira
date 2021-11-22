@@ -9,9 +9,11 @@ export const useProject = (param: Partial<Project>) => {
   const client = useHttp();
   const { run, ...rest } = useAsync<Project[]>();
 
+  const fetchProjects = () => client("projects", { data: cleanObject(param) });
+
   // 当param改变时，去获取项目列表的数据
   useEffect(() => {
-    run(client("projects", { data: cleanObject(param) }));
+    run(fetchProjects(), { retry: fetchProjects });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param]);
 
@@ -23,7 +25,7 @@ export const useEditProject = () => {
   const client = useHttp();
   const { run, ...resultAsync } = useAsync<Project[]>();
   const mutate = (params: Partial<Project>) => {
-    run(
+    return run(
       client(`projects/${params.id}`, {
         data: params,
         method: "PATCH",

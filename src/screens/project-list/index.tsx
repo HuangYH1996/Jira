@@ -24,7 +24,7 @@ export const ProjectListScreen = () => {
   const debounceParam = useDebounce(param, 300);
 
   // const { run, isLoading, error, data: list } = useAsync<Project[]>()
-  const { isLoading, error, data: list } = useProject(debounceParam);
+  const { isLoading, error, data: list, retry } = useProject(debounceParam);
 
   // user列表
   const users = useUsers();
@@ -41,7 +41,12 @@ export const ProjectListScreen = () => {
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
-      <List users={users} dataSource={list || []} loading={isLoading}></List>
+      <List
+        refresh={retry}
+        users={users}
+        dataSource={list || []}
+        loading={isLoading}
+      ></List>
     </Container>
   );
 };
