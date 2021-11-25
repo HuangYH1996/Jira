@@ -5,12 +5,12 @@ import { useHttp } from "./http";
 import { useAsync } from "./use-async";
 
 // 参数为要传入的搜索对象
-export const useProject = (param: Partial<Project>) => {
+export const useProject = (param?: Partial<Project>) => {
   const client = useHttp();
   const { run, ...rest } = useAsync<Project[]>();
 
   const fetchProjects = useCallback(
-    () => client("projects", { data: cleanObject(param) }),
+    () => client("projects", { data: cleanObject(param || {}) }),
     [client, param]
   );
 

@@ -8,15 +8,26 @@ import { Navigate, Route, Routes } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ProjectScreen } from "screens/project";
 import { resetRoute } from "utils";
+import { useState } from "react";
+import { ProjectListPopover } from "screens/project-list/project-list-popover";
+import { ProjectModal } from "screens/project-list/project-modal";
 
 export const AuthenticatedApp = () => {
+  const [projectModalOpen, setProjectModalOpen] = useState(false);
   return (
     <Container>
-      <PageHeader />
+      <PageHeader setProjectModalOpen={setProjectModalOpen} />
       <Main>
         <Router>
           <Routes>
-            <Route path={"/projects"} element={<ProjectListScreen />} />
+            <Route
+              path={"/projects"}
+              element={
+                <ProjectListScreen
+                  setProjectModalOpen={() => setProjectModalOpen(true)}
+                />
+              }
+            />
             <Route
               path={"/projects/:projectId/*"}
               element={<ProjectScreen />}
@@ -25,20 +36,27 @@ export const AuthenticatedApp = () => {
           </Routes>
         </Router>
       </Main>
+      <ProjectModal
+        projectModalOpen={projectModalOpen}
+        setProjectModalClose={() => setProjectModalOpen(false)}
+      />
     </Container>
   );
 };
 
-const PageHeader = () => {
+const PageHeader = (props: {
+  setProjectModalOpen: (isOpen: boolean) => void;
+}) => {
   const { logout, user } = useAuth();
+
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
         <Button type={"link"} onClick={resetRoute}>
           <SoftwareLogo width={200} color={"red"} />
         </Button>
-        <h3>项目</h3>
-        <h3>用户</h3>
+        <ProjectListPopover setProjectModalOpen={props.setProjectModalOpen} />
+        <span>用户</span>
       </HeaderLeft>
       <HeaderRight>
         {/* <Button onClick={logout}>登出</Button> */}

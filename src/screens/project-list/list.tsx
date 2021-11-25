@@ -1,4 +1,4 @@
-import { Table, TableProps } from "antd";
+import { Button, Dropdown, Menu, Table, TableProps } from "antd";
 import { User } from "./search-panel";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
@@ -17,6 +17,7 @@ export interface Project {
 interface ListProps extends TableProps<Project> {
   users: User[];
   refresh?: () => void;
+  setProjectModalOpen?: () => void;
 }
 
 export const List = ({ users, ...props }: ListProps) => {
@@ -64,6 +65,32 @@ export const List = ({ users, ...props }: ListProps) => {
           <span>
             {users.find((user) => user.id === project.personId)?.name}
           </span>
+        );
+      },
+    },
+    {
+      title: "",
+      render(project: Project) {
+        return (
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item key={"edit"}>
+                  <Button
+                    style={{ padding: 0 }}
+                    type={"link"}
+                    onClick={props.setProjectModalOpen}
+                  >
+                    编辑
+                  </Button>
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            <Button type={"link"} style={{ color: "black" }}>
+              ...
+            </Button>
+          </Dropdown>
         );
       },
     },
