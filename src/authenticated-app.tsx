@@ -11,12 +11,16 @@ import { resetRoute } from "utils";
 import { useState } from "react";
 import { ProjectListPopover } from "screens/project-list/project-list-popover";
 import { ProjectModal } from "screens/project-list/project-modal";
+import { ProjectModalButton } from "screens/project-list/project-modal-button";
 
 export const AuthenticatedApp = () => {
   const [projectModalOpen, setProjectModalOpen] = useState(false);
+  const ProjectModalButtonProp = (
+    <ProjectModalButton setProjectModalOpen={setProjectModalOpen} />
+  );
   return (
     <Container>
-      <PageHeader setProjectModalOpen={setProjectModalOpen} />
+      <PageHeader projectModalButton={ProjectModalButtonProp} />
       <Main>
         <Router>
           <Routes>
@@ -24,7 +28,7 @@ export const AuthenticatedApp = () => {
               path={"/projects"}
               element={
                 <ProjectListScreen
-                  setProjectModalOpen={() => setProjectModalOpen(true)}
+                  projectModalButton={ProjectModalButtonProp}
                 />
               }
             />
@@ -44,9 +48,7 @@ export const AuthenticatedApp = () => {
   );
 };
 
-const PageHeader = (props: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+const PageHeader = (props: { projectModalButton: JSX.Element }) => {
   const { logout, user } = useAuth();
 
   return (
@@ -55,7 +57,7 @@ const PageHeader = (props: {
         <Button type={"link"} onClick={resetRoute}>
           <SoftwareLogo width={200} color={"red"} />
         </Button>
-        <ProjectListPopover setProjectModalOpen={props.setProjectModalOpen} />
+        <ProjectListPopover projectModalButton={props.projectModalButton} />
         <span>用户</span>
       </HeaderLeft>
       <HeaderRight>

@@ -3,14 +3,14 @@ import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { useDebounce, useDocumentTitle } from "utils";
 import styled from "@emotion/styled";
-import { Button, Typography } from "antd";
+import { Typography } from "antd";
 import { useProject } from "utils/project";
 import { useUsers } from "utils/user";
 import { useProjectParam } from "./utils";
 import { Row } from "components/lib";
 
 export const ProjectListScreen = (props: {
-  setProjectModalOpen: () => void;
+  projectModalButton: JSX.Element;
 }) => {
   // search需要2个参数：项目名和id
   // const [, setParam] = useState({
@@ -37,7 +37,7 @@ export const ProjectListScreen = (props: {
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        <Button onClick={props.setProjectModalOpen}>创建项目</Button>
+        {props.projectModalButton}
       </Row>
       <SearchPanel
         users={users}
@@ -52,7 +52,7 @@ export const ProjectListScreen = (props: {
         users={users}
         dataSource={list || []}
         loading={isLoading}
-        setProjectModalOpen={props.setProjectModalOpen}
+        projectModalButton={props.projectModalButton}
       ></List>
     </Container>
   );

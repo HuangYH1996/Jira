@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
-import { Button, Divider, List, Popover, Typography } from "antd";
+import { Divider, List, Popover, Typography } from "antd";
 import { useProject } from "utils/project";
 
 export const ProjectListPopover = (props: {
-  setProjectModalOpen: (isOpen: boolean) => void;
+  projectModalButton: JSX.Element;
 }) => {
   const { data: projects } = useProject();
   const pinnedList = projects?.filter((project) => project.pin);
@@ -19,13 +19,7 @@ export const ProjectListPopover = (props: {
         )}
       />
       <Divider />
-      <Button
-        style={{ padding: 0 }}
-        type={"link"}
-        onClick={() => props.setProjectModalOpen(true)}
-      >
-        创建项目
-      </Button>
+      {props.projectModalButton}
     </ContainerDiv>
   );
   return (
