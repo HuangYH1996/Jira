@@ -8,10 +8,9 @@ import { useProject } from "utils/project";
 import { useUsers } from "utils/user";
 import { useProjectParam } from "./utils";
 import { Row } from "components/lib";
+import { ProjectModalButton } from "./project-modal-button";
 
-export const ProjectListScreen = (props: {
-  projectModalButton: JSX.Element;
-}) => {
+export const ProjectListScreen = () => {
   // search需要2个参数：项目名和id
   // const [, setParam] = useState({
   //   name: "",
@@ -37,7 +36,7 @@ export const ProjectListScreen = (props: {
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        {props.projectModalButton}
+        <ProjectModalButton />
       </Row>
       <SearchPanel
         users={users}
@@ -52,7 +51,6 @@ export const ProjectListScreen = (props: {
         users={users}
         dataSource={list || []}
         loading={isLoading}
-        projectModalButton={props.projectModalButton}
       ></List>
     </Container>
   );

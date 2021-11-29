@@ -5,16 +5,20 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { DevTools, loadServer } from "jira-dev-tool";
 import { AppProviders } from "context/index";
+import { store } from "store";
+import { Provider } from "react-redux";
 // jira-dev-tool也用了antd 所以这里放在后面进行覆盖
 import "antd/dist/antd.less";
 
 loadServer(() => {
   ReactDOM.render(
     <React.StrictMode>
-      <AppProviders>
-        <DevTools />
-        <App />
-      </AppProviders>
+      <Provider store={store}>
+        <AppProviders>
+          <DevTools />
+          <App />
+        </AppProviders>
+      </Provider>
     </React.StrictMode>,
     document.getElementById("root")
   );

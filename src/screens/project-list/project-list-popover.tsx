@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 import { Divider, List, Popover, Typography } from "antd";
 import { useProject } from "utils/project";
+import { ProjectModalButton } from "./project-modal-button";
 
-export const ProjectListPopover = (props: {
-  projectModalButton: JSX.Element;
-}) => {
+export const ProjectListPopover = () => {
   const { data: projects } = useProject();
   const pinnedList = projects?.filter((project) => project.pin);
+
   const content = (
     <ContainerDiv>
       <Typography.Text>收藏项目</Typography.Text>
@@ -19,7 +19,7 @@ export const ProjectListPopover = (props: {
         )}
       />
       <Divider />
-      {props.projectModalButton}
+      <ProjectModalButton />
     </ContainerDiv>
   );
   return (
