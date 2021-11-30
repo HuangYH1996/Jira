@@ -6,12 +6,12 @@ import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProject } from "utils/project";
 import { useUsers } from "utils/user";
-import { useProjectParam } from "./utils";
+import { useProjectParam } from "utils/project-list";
 import { Row } from "components/lib";
+import { ProjectModalButton } from "./project-modal-button";
+import { useProjectModal } from "utils/url";
 
-export const ProjectListScreen = (props: {
-  projectModalButton: JSX.Element;
-}) => {
+export const ProjectListScreen = () => {
   // search需要2个参数：项目名和id
   // const [, setParam] = useState({
   //   name: "",
@@ -21,7 +21,7 @@ export const ProjectListScreen = (props: {
   // const [param, setParam] = useUrlQueryParam(["name", "personId"]);
   // // 对param中的personId进行类型转换
   // const projectParam = {...param, personId: Number(param.personId) || undefined}
-
+  const { open } = useProjectModal();
   const [param, setParam] = useProjectParam();
   // 对param添加防抖操作
   const debounceParam = useDebounce(param, 300);
@@ -37,7 +37,7 @@ export const ProjectListScreen = (props: {
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        {props.projectModalButton}
+        <ProjectModalButton setProjectModalOpen={open} />
       </Row>
       <SearchPanel
         users={users}
@@ -52,7 +52,6 @@ export const ProjectListScreen = (props: {
         users={users}
         dataSource={list || []}
         loading={isLoading}
-        projectModalButton={props.projectModalButton}
       ></List>
     </Container>
   );

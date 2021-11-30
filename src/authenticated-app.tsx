@@ -8,47 +8,35 @@ import { Navigate, Route, Routes } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ProjectScreen } from "screens/project";
 import { resetRoute } from "utils";
-import { useState } from "react";
 import { ProjectListPopover } from "screens/project-list/project-list-popover";
 import { ProjectModal } from "screens/project-list/project-modal";
-import { ProjectModalButton } from "screens/project-list/project-modal-button";
 
 export const AuthenticatedApp = () => {
-  const [projectModalOpen, setProjectModalOpen] = useState(false);
-  const ProjectModalButtonProp = (
-    <ProjectModalButton setProjectModalOpen={setProjectModalOpen} />
-  );
+  // const [projectModalOpen, setProjectModalOpen] = useState(false);
+  // const ProjectModalButtonProp = (
+  //   <ProjectModalButton setProjectModalOpen={setProjectModalOpen} />
+  // );
   return (
     <Container>
-      <PageHeader projectModalButton={ProjectModalButtonProp} />
-      <Main>
-        <Router>
+      <Router>
+        <PageHeader />
+        <Main>
           <Routes>
-            <Route
-              path={"/projects"}
-              element={
-                <ProjectListScreen
-                  projectModalButton={ProjectModalButtonProp}
-                />
-              }
-            />
+            <Route path={"/projects"} element={<ProjectListScreen />} />
             <Route
               path={"/projects/:projectId/*"}
               element={<ProjectScreen />}
             />
             <Route path={"/"} element={<Navigate to={"/projects"} replace />} />
           </Routes>
-        </Router>
-      </Main>
-      <ProjectModal
-        projectModalOpen={projectModalOpen}
-        setProjectModalClose={() => setProjectModalOpen(false)}
-      />
+        </Main>
+        <ProjectModal />
+      </Router>
     </Container>
   );
 };
 
-const PageHeader = (props: { projectModalButton: JSX.Element }) => {
+const PageHeader = () => {
   const { logout, user } = useAuth();
 
   return (
@@ -57,7 +45,7 @@ const PageHeader = (props: { projectModalButton: JSX.Element }) => {
         <Button type={"link"} onClick={resetRoute}>
           <SoftwareLogo width={200} color={"red"} />
         </Button>
-        <ProjectListPopover projectModalButton={props.projectModalButton} />
+        <ProjectListPopover />
         <span>用户</span>
       </HeaderLeft>
       <HeaderRight>
