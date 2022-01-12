@@ -3,13 +3,12 @@ import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { useDebounce, useDocumentTitle } from "utils";
 import styled from "@emotion/styled";
-import { Typography } from "antd";
-import { useProject } from "utils/project";
+import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
-import { useProjectParam } from "utils/project-list";
-import { Row } from "components/lib";
+import { useProjectsSearchParams } from "utils/project-list";
+import { ErrorBox, Row } from "components/lib";
 import { ProjectModalButton } from "./project-modal-button";
-import { useProjectModal } from "utils/url";
+import { useProjectModal } from "./utils";
 
 export const ProjectListScreen = () => {
   // search需要2个参数：项目名和id
@@ -22,12 +21,12 @@ export const ProjectListScreen = () => {
   // // 对param中的personId进行类型转换
   // const projectParam = {...param, personId: Number(param.personId) || undefined}
   const { open } = useProjectModal();
-  const [param, setParam] = useProjectParam();
+  const [param, setParam] = useProjectsSearchParams();
   // 对param添加防抖操作
   const debounceParam = useDebounce(param, 300);
 
   // const { run, isLoading, error, data: list } = useAsync<Project[]>()
-  const { isLoading, error, data: list, retry } = useProject(debounceParam);
+  const { isLoading, error, data: list } = useProjects(debounceParam);
 
   // user列表
   const users = useUsers();
@@ -44,11 +43,12 @@ export const ProjectListScreen = () => {
         param={param}
         setParam={setParam}
       ></SearchPanel>
-      {error ? (
+      {/* {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
-      ) : null}
+      ) : null} */}
+      <ErrorBox error={error} />
       <List
-        refresh={retry}
+        // refresh={retry}
         users={users}
         dataSource={list || []}
         loading={isLoading}
