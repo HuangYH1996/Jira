@@ -27,6 +27,11 @@ export const ProjectModal = () => {
     });
   };
 
+  const closeModal = () => {
+    form.resetFields();
+    close();
+  };
+
   const title = editingProject ? "编辑项目" : "创建项目";
 
   // 当editProject改变时 需要将表单重置一遍
@@ -35,13 +40,13 @@ export const ProjectModal = () => {
   }, [editingProject, form]);
 
   return (
-    <Container>
-      <Drawer
-        forceRender={true}
-        width="100%"
-        visible={projectModalOpen}
-        onClose={close}
-      >
+    <Drawer
+      forceRender={true}
+      width="100%"
+      visible={projectModalOpen}
+      onClose={closeModal}
+    >
+      <Container>
         {isLoading ? (
           <Spin size="large" />
         ) : (
@@ -83,14 +88,15 @@ export const ProjectModal = () => {
             </Form>
           </>
         )}
-      </Drawer>
-    </Container>
+      </Container>
+    </Drawer>
   );
 };
 
 const Container = styled.div`
   display: flex;
   height: 80vh;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
