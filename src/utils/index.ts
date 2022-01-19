@@ -62,7 +62,7 @@ export const useArray = <T>(persons: T[]) => {
   return { value, clear, removeIndex, add };
 };
 
-export const useDocumentTitle = (title: string, keepOnUnmount: boolean) => {
+export const useDocumentTitle = (title: string, keepOnUnmount?: boolean) => {
   const oldTitle = useRef(document.title).current;
   console.log("渲染时的oldTitle：", oldTitle);
 

@@ -10,6 +10,7 @@ export const Row = styled.div<{
   display: flex;
   align-items: center;
   justify-content: ${(props) => (props.between ? "space-between" : undefined)};
+  margin-bottom: ${(props) => props.marginBootom + "rem"};
   > * {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -19,7 +20,6 @@ export const Row = styled.div<{
         : props.gap
         ? "2rem"
         : undefined};
-    margin-bootom: ${(props) => props.marginBootom + "rem"};
   }
 `;
 
