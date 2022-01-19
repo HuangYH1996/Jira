@@ -11,7 +11,7 @@ export const SearchPanel = () => {
   const reset = () => {
     setSearchParams({
       typeId: undefined,
-      processorId: undefined,
+      processId: undefined,
       tagId: undefined,
       name: undefined,
     });

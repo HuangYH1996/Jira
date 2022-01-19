@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { ScreenContainer } from "components/lib";
 import { useDocumentTitle } from "utils";
 import { useKanbans } from "utils/kanban";
 import { KanbanColumn } from "./kanban-column";
@@ -12,22 +13,27 @@ export const KanbanScreen = () => {
   // 从url内容获取相应project
   const { data: currentProject } = useProjectInUrl();
   return (
-    <>
+    <ScreenContainer>
       <h1>{currentProject?.name}看板</h1>
       <SearchPanel />
-      <ColumnContainer>
+      <Container>
         {kanbans?.map((kanban) => (
-          <div key={kanban.id}>
+          <ColumnContainer key={kanban.id}>
             <KanbanColumn kanban={kanban} />
-          </div>
+          </ColumnContainer>
         ))}
-      </ColumnContainer>
-    </>
+      </Container>
+    </ScreenContainer>
   );
 };
 
+const Container = styled.div`
+  display: flex;
+  flex: 1;
+`;
+
 export const ColumnContainer = styled.div`
   display: flex;
-  overflow: hidden;
+  /* overflow-x: scroll;  */
   margin-right: 2rem;
 `;
