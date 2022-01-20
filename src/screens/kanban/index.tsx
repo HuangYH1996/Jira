@@ -46,6 +46,7 @@ export const KanbanScreen = () => {
 const Container = styled.div`
   display: flex;
   flex: 1;
+  overflow: hidden;
 `;
 
 export const ColumnsContainer = styled.div`
