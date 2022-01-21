@@ -61,4 +61,5 @@ ProjectListScreen.whyDidYouRender = false;
 
 const Container = styled.div`
   padding: 2rem;
+  flex: 1;
 `;

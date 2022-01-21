@@ -1,6 +1,6 @@
 import { useProject } from "utils/project";
 import { useProjectsSearchParams } from "utils/project-list";
-import { useUrlQueryParam } from "utils/url";
+import { useSetUrlSearchParam, useUrlQueryParam } from "utils/url";
 
 export const useProjectModal = () => {
   const [{ projectCreate }, setProjectCreate] = useUrlQueryParam([
@@ -9,14 +9,20 @@ export const useProjectModal = () => {
   const [{ editingProjectId }, setEditingProjectId] = useUrlQueryParam([
     "editingProjectId",
   ]);
+  const setSearchParams = useSetUrlSearchParam();
+
   const { data: editingProject, isLoading } = useProject(
     Number(editingProjectId)
   );
 
   const open = (value: boolean) => setProjectCreate({ projectCreate: value });
   const close = () => {
-    setEditingProjectId({ editingProjectId: undefined });
-    setProjectCreate({ projectCreate: undefined });
+    // setEditingProjectId({ editingProjectId: undefined });
+    // setProjectCreate({ projectCreate: undefined });
+    setSearchParams({
+      projectCreate: undefined,
+      editingProjectId: undefined,
+    });
   };
   const startEdit = (id: number) =>
     setEditingProjectId({ editingProjectId: id });

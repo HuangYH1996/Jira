@@ -12,6 +12,7 @@ import {
   useTasksSearchParams,
 } from "./utils";
 import { CreateKanban } from "./create-kanban";
+import { TaskModal } from "./task-modal";
 
 export const KanbanScreen = () => {
   useDocumentTitle("看板列表");
@@ -33,12 +34,13 @@ export const KanbanScreen = () => {
         ) : (
           <ColumnsContainer>
             {kanbans?.map((kanban) => (
-              <KanbanColumn kanban={kanban} />
+              <KanbanColumn kanban={kanban} key={kanban.id} />
             ))}
             <CreateKanban />
           </ColumnsContainer>
         )}
       </Container>
+      <TaskModal />
     </ScreenContainer>
   );
 };
