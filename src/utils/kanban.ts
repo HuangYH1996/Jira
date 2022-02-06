@@ -3,7 +3,13 @@ import { useHttp } from "./http";
 import { useQuery } from "react-query";
 import { cleanObject } from "utils";
 import { QueryKey, useMutation } from "react-query";
-import { useAddConfig, useDeleteConfig } from "./use-optimistic-options";
+import {
+  useAddConfig,
+  useDeleteConfig,
+  useReorderConfig,
+  useReorderKanbanConfig,
+  useReorderTaskConfig,
+} from "./use-optimistic-options";
 
 export const useKanbans = (param?: Partial<Kanban>) => {
   const client = useHttp();
@@ -32,5 +38,45 @@ export const useDeleteKanban = (queryKey: QueryKey) => {
         method: "DELETE",
       }),
     useDeleteConfig(queryKey)
+  );
+};
+
+// 看板拖拽持久化
+
+export interface SortProps {
+  // 要重新排序的item
+  fromId: number;
+  // 目标item
+  referenceId: number;
+  // 放在目标item的前面或后面
+  type: "before" | "after";
+
+  fromKanbanId?: number;
+  toKanbanId?: number;
+}
+
+export const useReorderKanban = (queryKey: QueryKey) => {
+  const client = useHttp();
+  return useMutation(
+    (params: SortProps) =>
+      client("kanbans/reorder", {
+        data: params,
+        method: "POST",
+      }),
+    // useReorderConfig(queryKey)
+    useReorderKanbanConfig(queryKey)
+  );
+};
+
+export const useReorderTask = (queryKey: QueryKey) => {
+  const client = useHttp();
+  return useMutation(
+    (params: SortProps) =>
+      client("tasks/reorder", {
+        data: params,
+        method: "POST",
+      }),
+    // useReorderConfig(queryKey)
+    useReorderTaskConfig(queryKey)
   );
 };
