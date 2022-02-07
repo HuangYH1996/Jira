@@ -1,18 +1,21 @@
 import styled from "@emotion/styled";
 import { Divider, List, Popover, Typography } from "antd";
 import { useProjects } from "utils/project";
-import { useProjectModal, useProjectsQueryKey } from "./utils";
-import { ProjectModalButton } from "./project-modal-button";
+import { useUsers } from "utils/user";
+import {
+  useProjectModal,
+  useProjectsQueryKey,
+} from "screens/project-list/utils";
+import { ProjectModalButton } from "screens/project-list/project-modal-button";
 
-export const ProjectListPopover = () => {
+export const UserPopover = () => {
   const { open } = useProjectModal();
-  const { data: projects, refetch } = useProjects();
-  const pinnedList = projects?.filter((project) => project.pin);
+  const { data: users, refetch } = useUsers();
   const content = (
     <ContainerDiv>
-      <Typography.Text>收藏项目</Typography.Text>
+      <Typography.Text>组员列表</Typography.Text>
       <List
-        dataSource={pinnedList}
+        dataSource={users}
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta title={item.name} />
@@ -20,8 +23,6 @@ export const ProjectListPopover = () => {
         )}
       />
       <Divider />
-      {/* {props.projectModalButton} */}
-      <ProjectModalButton setProjectModalOpen={open} />
     </ContainerDiv>
   );
   return (
@@ -30,7 +31,7 @@ export const ProjectListPopover = () => {
       placement={"bottom"}
       onVisibleChange={() => refetch()}
     >
-      <Typography.Text>项目</Typography.Text>
+      <Typography.Text>组员</Typography.Text>
     </Popover>
   );
 };

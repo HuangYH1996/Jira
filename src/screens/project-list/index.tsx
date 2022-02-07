@@ -9,6 +9,7 @@ import { useProjectsSearchParams } from "utils/project-list";
 import { ErrorBox, Row } from "components/lib";
 import { ProjectModalButton } from "./project-modal-button";
 import { useProjectModal } from "./utils";
+import { User } from "types/user";
 
 export const ProjectListScreen = () => {
   // search需要2个参数：项目名和id
@@ -29,7 +30,7 @@ export const ProjectListScreen = () => {
   const { isLoading, error, data: list } = useProjects(debounceParam);
 
   // user列表
-  const users = useUsers();
+  const { data: users } = useUsers();
   useDocumentTitle("项目列表", false);
 
   return (
@@ -39,7 +40,7 @@ export const ProjectListScreen = () => {
         <ProjectModalButton setProjectModalOpen={open} />
       </Row>
       <SearchPanel
-        users={users}
+        users={users as User[]}
         param={param}
         setParam={setParam}
       ></SearchPanel>
@@ -49,7 +50,7 @@ export const ProjectListScreen = () => {
       <ErrorBox error={error} />
       <List
         // refresh={retry}
-        users={users}
+        users={users as User[]}
         dataSource={list || []}
         loading={isLoading}
       ></List>
